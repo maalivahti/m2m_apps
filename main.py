@@ -15,7 +15,7 @@ from store.objects_store import objects_acc, objects_bot
 from kivymd.uix.list import MDList, OneLineListItem
 from kivymd.uix.scrollview import MDScrollView
 
-Window.size = (360, 800)
+Window.size = (720, 1280)
 
 KV = '''
 <DetailObjectContent>
@@ -43,14 +43,14 @@ MDScreen:
             name: 'objects'
             text: 'Объекты'
             icon: 'car-multiple'
-            md_bg_color: [0, .49, .76, 1]
+            # md_bg_color: [0, .49, .76, 1]
             
             MDGridLayout:
                 pos_hint:{'x': 0, 'top': 1}
                 size_hint: [1, .15]
                 # size: [0, 150]
                 cols: 1
-                # md_bg_color: 'orange'
+                md_bg_color: [0, .49, .76, 1]
                 
                 MDBoxLayout:
                     size_hint: [1, .5]
@@ -166,6 +166,14 @@ def create_obj_settings_list(obj_data):
     return list
 
 
+def close_obj_sett(self):
+    self.parent.parent.parent.parent.dismiss(force=True)
+
+
+def save_obj_sett(self):
+    self.parent.parent.parent.parent.dismiss(force=True)
+
+
 # Отображение окна настроек объекта
 def show_alert_dialog(self):
     object = [obj for obj in objects_bot if obj.get('id') == self.id][0]
@@ -178,11 +186,13 @@ def show_alert_dialog(self):
                 text="ОТМЕНИТЬ",
                 theme_text_color="Custom",
                 text_color=self.theme_cls.primary_color,
+                on_release=close_obj_sett,
             ),
             MDFlatButton(
                 text="СОХРАНИТЬ",
                 theme_text_color="Custom",
                 text_color=self.theme_cls.primary_color,
+                on_release=save_obj_sett,
             ),
         ],
     )
