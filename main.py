@@ -1,5 +1,6 @@
 from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.properties import StringProperty
 from kivymd.app import MDApp
 from kivymd.uix.bottomsheet import MDBottomSheet
 from kivymd.uix.button import MDFlatButton
@@ -27,7 +28,22 @@ KV = '''
 <SettingsObjectContent>
     adaptive_height: True
     orientation: 'vertical'
-    md_bg_color: [1, 1, 1, .9]    
+    md_bg_color: [1, 1, 1, .9]
+    
+<CheckItem>
+    adaptive_height: True
+
+    MDCheckbox:
+        size_hint: None, None
+        size: "48dp", "48dp"
+        group: root.group
+
+    MDLabel:
+        text: root.text
+        adaptive_height: True
+        theme_text_color: "Custom"
+        text_color: "#B2B6AE"
+        pos_hint: {"center_y": .5}        
 
     
 <MyLabel>:
@@ -97,6 +113,7 @@ MDScreen:
                         pos_hint: {"x": 1, "center_y": .5}
                         theme_icon_color: "Custom"
                         icon_color: 'white'
+                        on_release: bottom_sheet.open()
                     
         MDBottomNavigationItem:
             name: 'statistics'
@@ -123,11 +140,70 @@ MDScreen:
 
             MDLabel:
                 text: 'Заявки ТП'
-                halign: 'center'        
+                halign: 'center'  
+                
+    MDBottomSheet:
+        id: bottom_sheet
+        elevation: 2
+        shadow_softness: 6
+        bg_color: "white"
+        type: "standard"
+        max_opening_height: "340dp"
+        default_opening_height: self.max_opening_height
+        adaptive_height: True
+        
+        MDBottomSheetDragHandle:
+            drag_handle_color: "grey"
+    
+            MDBottomSheetDragHandleTitle:
+                text: "Фильтр по объектам"
+                adaptive_height: True
+                bold: True
+                pos_hint: {"center_y": .5}
+    
+            MDBottomSheetDragHandleButton:
+                icon: "close"
+                _no_ripple_effect: True
+                on_release: bottom_sheet.dismiss() 
+                 
+        MDBottomSheetContent:
+            id: content_container
+            padding: 0, 0, 0, "16dp"
+            
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                padding: "12dp", "36dp", 0, 0
+                bg_color: "white"
+                
+                CheckItem:
+                    text: "Daily"
+                    group: "child"
+    
+                CheckItem:
+                    text: "Weekly"
+                    group: "child"
+    
+                CheckItem:
+                    text: "Monthly"
+                    group: "child"
+                    
+                MDRaisedButton:
+                    text: "Применить"
+                    md_bg_color: [0, .49, .76, 1]
+                    theme_text_color: "Custom"
+                    text_color: "white" 
+                    # pos_hint:{"center_x": .5},   
+                                                    
 '''
 
 bot_list = objects_bot
 acc_list = objects_acc
+
+
+class CheckItem(MDBoxLayout):
+    text = StringProperty()
+    group = StringProperty()
 
 
 class ObjectScroller(MDScrollView):
@@ -206,15 +282,15 @@ def create_object_list(objects):
         obj_detail_content = DetailObjectContent()
         obj_detail_content.add_widget(create_obj_detail_list(object['object_data']))
         obj_item = DetailObjectHead(content=obj_detail_content,
-                              icon=object['img_url'],
-                              panel_cls=MDExpansionPanelOneLine(
-                                  IconRightWidget(
-                                      id=object['id'],
-                                      icon=object['right_icon'],
-                                      on_release=show_alert_dialog,
-                                  ),
-                                  text=object['name'],
-                                  bg_color=[.95, .95, .95, 1]))
+                                    icon=object['img_url'],
+                                    panel_cls=MDExpansionPanelOneLine(
+                                        IconRightWidget(
+                                            id=object['id'],
+                                            icon=object['right_icon'],
+                                            on_release=show_alert_dialog,
+                                        ),
+                                        text=object['name'],
+                                        bg_color=[.95, .95, .95, 1]))
         obj_list.add_widget(obj_item)
 
     return obj_list
@@ -282,5 +358,3 @@ class M2MApp(MDApp):
 
 
 M2MApp().run()
-
-
