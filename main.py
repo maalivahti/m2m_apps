@@ -18,7 +18,7 @@ from kivymd.uix.scrollview import MDScrollView
 
 Window.size = (720, 1280)
 
-KV = '''
+APP = '''
 <DetailObjectContent>
     adaptive_height: True
     orientation: 'vertical'
@@ -148,7 +148,7 @@ MDScreen:
         shadow_softness: 6
         bg_color: "white"
         type: "standard"
-        max_opening_height: "340dp"
+        max_opening_height: "350dp"
         default_opening_height: self.max_opening_height
         adaptive_height: True
         
@@ -168,32 +168,34 @@ MDScreen:
                  
         MDBottomSheetContent:
             id: content_container
-            padding: 0, 0, 0, "16dp"
             
             MDBoxLayout:
                 orientation: "vertical"
                 adaptive_height: True
-                padding: "12dp", "36dp", 0, 0
+                padding: "12dp", "36dp", 0, "12dp"
                 bg_color: "white"
                 
-                CheckItem:
-                    text: "Daily"
-                    group: "child"
-    
-                CheckItem:
-                    text: "Weekly"
-                    group: "child"
-    
-                CheckItem:
-                    text: "Monthly"
-                    group: "child"
+                MDBoxLayout:
+                    adaptive_size: True
+                    spacing: "8dp"
+                    padding: 0, 0, 0, "16dp"
                     
-                MDRaisedButton:
+                    MDChip:
+                        text: "Объекты на УЗ"
+        
+                    MDChip:
+                        text: "Активные объекты"
+        
+                    MDChip:
+                        text: "Объекты в экспорте"
+                    
+                    
+                MDFlatButton:
                     text: "Применить"
                     md_bg_color: [0, .49, .76, 1]
                     theme_text_color: "Custom"
                     text_color: "white" 
-                    # pos_hint:{"center_x": .5},   
+                    pos_hint:{"center_x": .5}
                                                     
 '''
 
@@ -315,7 +317,7 @@ class M2MApp(MDApp):
 
     def build(self):
         self.theme_cls.material_style = 'M3'
-        return Builder.load_string(KV)
+        return Builder.load_string(APP)
 
     def on_start(self):
         load_objects(self, self.object_active_tab, bot_list)
@@ -357,4 +359,68 @@ class M2MApp(MDApp):
                 print(child)
 
 
-M2MApp().run()
+# M2MApp().run()
+
+
+Login = '''
+MDScreen:
+    MDAnchorLayout:
+        padding: "16dp"
+        # md_bg_color: [.2, .6, .8, 1]
+        size_hint: [1, .35]
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        
+        MDGridLayout:
+            # orientation: 'vertical'
+            # md_bg_color: [.2, .6, .8, 1]
+            size_hint: [.6, 1]
+            cols: 1
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            
+            Image:
+                pos_hint:{"center_x": .5} 
+                source: "static/img/logo.png"
+                size_hint_y: 1
+            
+            MDTextField:
+                hint_text: "Пользователь"
+                mode: "rectangle"
+                required: True
+                
+            MDTextField:
+                hint_text: "Пароль"
+                mode: "rectangle"
+                password: True
+                icon_left: "key-variant" 
+                required: True
+                
+            MDAnchorLayout:
+                pos_hint:{"center_x": .5}  
+                 
+                MDFlatButton:
+                    text: "Войти"
+                    padding: ["48dp", "16dp"]
+                    font_size: "18sp"
+                    md_bg_color: [0, .49, .76, 1]
+                    theme_text_color: "Custom"
+                    text_color: "white" 
+                    on_release: app.open_app()
+                 
+        
+'''
+
+
+class M2MLogin(MDApp):
+
+    def open_app(self):
+        M2MLogin().stop()
+        M2MApp().run()
+
+        print('open')
+
+    def build(self):
+        self.theme_cls.material_style = 'M3'
+        return Builder.load_string(Login)
+
+
+M2MLogin().run()
