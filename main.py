@@ -7,6 +7,7 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import IconLeftWidget, IconRightWidget
+from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.segmentedcontrol import MDSegmentedControl, MDSegmentedControlItem
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
@@ -16,7 +17,7 @@ from store.objects_store import objects_acc, objects_bot
 from kivymd.uix.list import MDList, OneLineListItem
 from kivymd.uix.scrollview import MDScrollView
 
-Window.size = (720, 1280)
+# Window.size = (720, 1280)
 
 APP = '''
 <DetailObjectContent>
@@ -45,7 +46,7 @@ APP = '''
         text_color: "#B2B6AE"
         pos_hint: {"center_y": .5}        
 
-    
+
 <MyLabel>:
 
 MDScreen:
@@ -189,13 +190,12 @@ MDScreen:
                     MDChip:
                         text: "Объекты в экспорте"
                     
-                    
                 MDFlatButton:
                     text: "Применить"
                     md_bg_color: [0, .49, .76, 1]
                     theme_text_color: "Custom"
                     text_color: "white" 
-                    pos_hint:{"center_x": .5}
+                    pos_hint:{"center_x": .5}   
                                                     
 '''
 
@@ -225,6 +225,10 @@ class SettingsObjectContent(MDBoxLayout):
 
 
 class DetailObjectHead(MDExpansionPanel):
+    pass
+
+
+class FilterCompany(MDDropdownMenu):
     pass
 
 
@@ -334,6 +338,7 @@ class M2MApp(MDApp):
 
         load_objects(self, self.object_active_tab, obj_list)
 
+
     def on_active(
 
             self,
@@ -359,7 +364,7 @@ class M2MApp(MDApp):
                 print(child)
 
 
-# M2MApp().run()
+M2MApp().run()
 
 
 Login = '''
@@ -416,11 +421,9 @@ class M2MLogin(MDApp):
         M2MLogin().stop()
         M2MApp().run()
 
-        print('open')
-
     def build(self):
         self.theme_cls.material_style = 'M3'
         return Builder.load_string(Login)
 
 
-M2MLogin().run()
+# M2MLogin().run()
