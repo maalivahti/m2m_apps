@@ -364,7 +364,7 @@ class M2MApp(MDApp):
                 print(child)
 
 
-M2MApp().run()
+# M2MApp().run()
 
 
 Login = '''
@@ -426,4 +426,4 @@ class M2MLogin(MDApp):
         return Builder.load_string(Login)
 
 
-# M2MLogin().run()
+M2MLogin().run()
